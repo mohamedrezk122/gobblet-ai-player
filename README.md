@@ -2,6 +2,9 @@
 
 
 ## Development Guidelines
+- File names 
+    + snake_case, e.g `game_actions`, `minimax` 
+    + make it short, and avoid clashing with functions/variable names 
 - Variable names
     + snake_case (all small separated by underscores, and begins by a noun), e.g `game_state`
     + try to avoid single/double chars variable names, make it meaningful  
