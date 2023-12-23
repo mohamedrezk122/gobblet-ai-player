@@ -1,5 +1,22 @@
 # Gobblet Game AI Player
 
+## Usage
+- clone repo 
+
+``` sh 
+git clone https://github.com/mohamedrezk122/gobblet-ai-player
+cd gobblet-ai-player
+```
+- install dependencies 
+
+``` sh 
+pip install -r requirements.txt
+```
+- run game 
+
+``` sh 
+python3 main.py 
+```
 
 ## Development Guidelines
 - File names 
