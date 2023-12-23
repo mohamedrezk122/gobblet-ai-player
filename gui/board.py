@@ -1,8 +1,8 @@
 import pygame
-from constants import *
-from piece import Piece
 import pygame_menu as pgm
-import time
+
+from .constants import *
+from .piece import Piece
 
 class Board:
     def __init__(self, menu):

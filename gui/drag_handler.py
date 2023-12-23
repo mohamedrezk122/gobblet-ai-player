@@ -1,9 +1,10 @@
 import pygame 
 import pygame_menu as pgm 
-from constants import *
+
+from .constants import *
 
 pygame.mixer.init()
-move_sound = pygame.mixer.Sound("./assets/move.mp3")
+move_sound = pygame.mixer.Sound("./gui/assets/move.mp3")
 
 
 class Drag_Handler:

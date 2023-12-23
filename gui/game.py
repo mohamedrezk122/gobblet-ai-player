@@ -1,8 +1,9 @@
 import pygame 
 import pygame_menu as pgm 
-from board import Board
-from drag_handler import Drag_Handler
-from constants import * 
+
+from .board import Board
+from .drag_handler import Drag_Handler
+from .constants import * 
 
 class Game:
 

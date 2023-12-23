@@ -1,6 +1,7 @@
 import pygame
-from constants import *
 import pygame_menu as pgm
+
+from .constants import *
 
 
 def dummy():

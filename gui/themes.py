@@ -2,7 +2,7 @@ import pygame
 import pygame_menu as pgm 
 
 background_image = pgm.baseimage.BaseImage(
-    image_path="assets/menu_image.png",
+    image_path="./gui/assets/menu_image.png",
     drawing_mode=pgm.baseimage.IMAGE_MODE_CENTER,
     drawing_offset=(10, 230),
 ).scale(0.8, 0.8, smooth=True)

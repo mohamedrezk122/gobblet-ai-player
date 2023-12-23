@@ -1,11 +1,10 @@
 import pygame
 import pygame_menu as pgm
 
-from pygame.locals import *
-from board import Board
-from game  import Game
-from constants import *
-from themes    import * 
+from .board import Board
+from .game  import Game
+from .constants import *
+from .themes    import * 
 
 pygame.init()
 
