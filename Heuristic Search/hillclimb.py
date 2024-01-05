@@ -1,10 +1,6 @@
-class Piece:
-    def __init__(self, size):
-        self.size = size
 class GobbletGameState:
     def __init__(self):
         # Initialize the game state
-        self.board = [[[], [], [], []], [[], [], [], []], [[], [], [], []], [[], [], [], []]]
         self.player_pieces = {
             "white": [[], [], [],[]],  # Four stacks for each player color
             "black": [[], [], [],[]]
