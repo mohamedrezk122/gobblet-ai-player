@@ -22,13 +22,22 @@ class Drag_Handler:
     def get_active_piece(self, pieces, event):
         active = None
         current_player = self.game.get_current_player()
+        active_pieces = []
         for idx, piece in enumerate(pieces):
             if piece.collidepoint(event.pos):
                 if piece.player != current_player :
                     continue 
-                if not self.drag:
-                    self.past_pos = piece.get_position()
-                active = idx
+                active_pieces.append(idx)
+        
+        max_so_far = -1
+        # choose the one on top 
+        for piece_idx in active_pieces :
+            piece = pieces[piece_idx]
+            if max_so_far < SIZE[piece.size][-1] :
+                max_so_far = SIZE[piece.size][-1] 
+                active = piece_idx   
+        if not self.drag and active is not None:
+            self.past_pos = pieces[active].get_position()
         return active
 
     def release_piece_at_tile(self, board, pieces, event):
@@ -53,6 +62,9 @@ class Drag_Handler:
     def update(self,events):
         board  = self.game.get_board().board
         pieces = self.game.get_board().get_pieces()
+
+        if self.game.end_of_game :
+            return
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.active = self.get_active_piece(pieces, event)
@@ -82,9 +94,17 @@ class Drag_Handler:
         if current_col == col and current_row == row :
             return 
         if current_col != None and current_row != None :
-            board[current_row][current_col].pop()
+            stack = board[current_row][current_col]
+            stack.pop()
+            if stack:
+                stack[-1].button.show()
+
         board[row][col].append(pieces[self.active])
         pieces[self.active].set_pos_by_row_and_col(row, col)
+        stack =  board[row][col]
+        if len(stack) > 1 : 
+            for i in range(len(stack)-1):
+                stack[i].button.hide()
         self.game.switch_turns()
         move_sound.play() 
 
