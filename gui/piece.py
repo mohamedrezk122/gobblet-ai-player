@@ -25,21 +25,6 @@ class Piece:
     def __str__(self):
         return f"Piece@ player {PLAYER[self.player][0]} size {SIZE[self.size][0]}"
 
-    def placce_aside(self):
-        self.dx, self.dy = self.position_correction()
-        offset = BOARD_POS_X / 2
-        if self.player == "b":
-            offset = BOARD_WIDTH + 1.5 * BOARD_POS_X
-        self.x = offset + self.dx
-        self.y = (
-            BOARD_POS_Y
-            + (SIZE[self.size][2] * BOARD_HEIGHT / PIECES_SIZES)
-            + 0.5 * BOARD_HEIGHT / 3
-        ) + self.dy
-
-        self.button.translate(self.x, self.y)
-        self.rerender_button()
-
     def place_aside(self, idx):
         self.dx, self.dy = self.position_correction()
         offset = BOARD_POS_X / 2
