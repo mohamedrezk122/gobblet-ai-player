@@ -52,3 +52,22 @@ class Board:
     def get_pieces(self):
         return self.pieces
 
+    def get_stack(self, row, col):
+        if col >= len(self.board[row]):
+            return None 
+        return self.board[row][col]
+
+    def get_top_piece(self, row, col):
+        stack = self.get_stack(row, col)
+        if stack :
+            return stack[-1]
+        return None 
+
+    def print_board(self):
+        for row in self.board:
+            for cell in row :
+                for p in cell :
+                    print(p.player , end=" ")
+                print(" | ", end=" ")
+            print()
+            print("--------------------------------------")
