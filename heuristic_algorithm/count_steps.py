@@ -233,9 +233,10 @@ class Game:
         flag=False
         mov=None
         maximizing_player = True
-        stak=3
+        stak=2
         x=0 
-        y=1 
+        y=1
+        z=0 
         valid_moves = Game.get_valid_moves()
         print(valid_moves)
         if(len(valid_moves)==0):
@@ -251,11 +252,10 @@ class Game:
          ro,co=best_move       
          while(Game.white_player.drag_piece(stak,None,None)==False):
           if(stak==-1):
-            y=1
+            z=1
             break
           stak-=1
-         if(y==1):
-          Game.white_player.drag_piece(stak,None,None)
+         if(z==0):
           mov=None            
          if(stak==-1):
           flag=True
@@ -268,8 +268,6 @@ class Game:
                     x=1
                 if(x==1):
                   break
-            if(x==1):
-              break;
          else:
             flag=False
             Game.white_player.drop_piece(ro,co)
@@ -287,7 +285,8 @@ class Game:
                 if(Game.get_top(i,j).color=="w" and (Game.get_top(i,j).size>Game.get_top(ro,co).size)):
                     mov=[i,j]
                     Game.white_player.drag_piece(None,i,j)
-                    Game.white_player.drop_piece(ro,co)       
+                    Game.white_player.drop_piece(ro,co)
+        print("ai size is: "+str(Game.get_top(ro,co).size))                   
         return mov,best_move,flag
     
     def get_pieces( check ):
@@ -692,10 +691,10 @@ class Game:
                 print( 'Player Piece Size = ' + str( Game.get_top( target_row , target_column ).size )  )
             elif Game.current == "w":
                 print("AI turn ")
-                mov=Game.make_best_move(2,"w")
+                mov,bestmov,flg=Game.make_best_move(2,"w")
                 ai_move = Game.moveAi('w')
-                print("ai move == " + str(ai_move)) 
-                target_row,target_column=mov
+                print("ai move == " + str(bestmov)) 
+                target_row,target_column=bestmov
                 random_row_col = random.choice( Game.get_valid_moves() )
                 print ( "random_row_col = " + str(random_row_col) )
                 xc+=1
@@ -727,17 +726,14 @@ class Game:
                         print( "Piece Size = " + str(Game.get_top( ai_move[1][0], ai_move[1][1]).size ))
                         
                 elif difficulty == "easy" :
-                    mov=None
-                bestmov=None
-                flg=True
-                mov,bestmov,flg=Game.make_best_move(2,"w")
-                if(flg==False):
+                 if(flg==False):
                    print("ai outside board from stack ") 
                    print("ai move to: "+str(bestmov)) 
-                else:
+                 else:
                    print("ai inside board")
                    print("ai move from: "+str(mov)) 
                    print("ai move to: "+str(bestmov))
+                target_row,target_column=bestmov   
                 print(Game.get_top(target_row,target_column).size)    
             if  Game.winner != "":
                 return Game.winner                        
