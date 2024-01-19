@@ -277,7 +277,7 @@ class Game:
          flag=True
          for i in range(4):
             for j in range(4):
-                if(Game.get_top(i,j).color=="w" and (Game.get_top(i,j).size==1)):
+                if(Game.get_top(i,j).color=="w" and (Game.get_top(i,j).size==1 or Game.get_top(i,j).size==2)):
                    ro=i
                    co=j
                    best_move=[ro,co]
