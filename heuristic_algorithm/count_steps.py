@@ -1,4 +1,7 @@
 h=3
+siz=4
+count=0
+flag=False
 import random
 class Piece:
     def __init__(self, size = None, color = None, row = None, column = None, stack = None):
@@ -147,15 +150,16 @@ class Game:
     #############################################    
     def get_valid_moves():
         valid_moves = []
+        global siz,count
         # Iterate through the game board to find all possible valid moves
+        count+=1
+        if(count>3):
+           count=1
+           siz-=1 
         for row in range(4):
             for col in range(4):
                 if Game.get_top(row,col).size==None:
                     # If the cell is empty, it's a valid move to place a piece there
-                    valid_moves.append((row, col))
-                elif Game.get_top(row,col).size < 4 and Game.get_top(row,col).color == "w":
-                    # If the cell has a stack but the top piece size is less than 4,
-                    # placing a piece with a larger size is a valid move 
                     valid_moves.append((row, col))
         return valid_moves
 
@@ -193,7 +197,7 @@ class Game:
                 return True  # Move successful
         return False 
 
-    def alphabeta(depth, alpha, beta, maximizing_player,p):  # color piece
+    def alphabeta(depth, alpha, beta, maximizing_player,p):
         if depth == 0 or Game.set_winner() is not None:
             return Game.evaluate_state(p)
         valid_moves = Game.get_valid_moves()
@@ -219,23 +223,72 @@ class Game:
                 if beta <= alpha:
                     break
             return min_eval
-
+            
     def make_best_move(depth,p):
+        global flag
         best_move = None
         max_eval = float('-inf')
         alpha = float('-inf')
         beta = float('inf')
+        flag=False
+        mov=None
         maximizing_player = True
+        stak=3
+        x=0 
+        y=1 
         valid_moves = Game.get_valid_moves()
         print(valid_moves)
-        for move in valid_moves: 
+        if(len(valid_moves)==0):
+            y=0
+        if(y==1):
+         for move in valid_moves: 
            Game.make_move(move,p)    
            eval = Game.alphabeta(depth - 1, alpha, beta, not maximizing_player,p)
            Game.undo_move(move)
            if eval > max_eval:
                 max_eval = eval
-                best_move = move        
-        return best_move
+                best_move = move
+         ro,co=best_move       
+         while(Game.white_player.drag_piece(stak,None,None)==False):
+          if(stak==-1):
+            y=1
+            break
+          stak-=1
+         if(y==1):
+          Game.white_player.drag_piece(stak,None,None)
+          mov=None            
+         if(stak==-1):
+          flag=True
+          for i in range(4):
+            for j in range(4):
+                if(Game.get_top(i,j).color=="w" and (Game.get_top(i,j).size>Game.get_top(ro,co).size)):
+                    mov=[i,j]
+                    Game.white_player.drag_piece(None,i,j)
+                    Game.white_player.drop_piece(ro,co)
+                    x=1
+                if(x==1):
+                  break
+            if(x==1):
+              break;
+         else:
+            flag=False
+            Game.white_player.drop_piece(ro,co)
+        else:
+         flag=True
+         for i in range(4):
+            for j in range(4):
+                if(Game.get_top(i,j).color=="w" and (Game.get_top(i,j).size==1)):
+                   ro=i
+                   co=j
+                   best_move=[ro,co]
+                   break
+         for i in range(4):
+            for j in range(4):
+                if(Game.get_top(i,j).color=="w" and (Game.get_top(i,j).size>Game.get_top(ro,co).size)):
+                    mov=[i,j]
+                    Game.white_player.drag_piece(None,i,j)
+                    Game.white_player.drop_piece(ro,co)       
+        return mov,best_move,flag
     
     def get_pieces( check ):
         ai_large_pieces = []
@@ -674,22 +727,18 @@ class Game:
                         print( "Piece Size = " + str(Game.get_top( ai_move[1][0], ai_move[1][1]).size ))
                         
                 elif difficulty == "easy" :
-                    print( 'AI drag from outside' )
-                    Game.white_player.drag_piece(rc,None,None)
-                    print('Piece color = '+  str(Game.white_player.color) )
-                    print('stack  =  ' + str( rc ))    
-                    Game.white_player.drop_piece(target_row,target_column)
-                    print( "AI played in " + str( (target_row, target_column) )  )
-                    print( "Piece Size = " + str(Game.get_top( target_row, target_column).size )) 
-                    
-                #if ai_move != None and difficulty == "hard" :
-                 #   print( "ai move ==" + str(ai_move[1]) )
-                #else : 
-                 #   print( "AI played in " + str(mov) )
-                rc += 1             
-                if( rc > 2 ) :
-                    rc = 0
-                print(Game.get_valid_moves()) 
+                    mov=None
+                bestmov=None
+                flg=True
+                mov,bestmov,flg=Game.make_best_move(2,"w")
+                if(flg==False):
+                   print("ai outside board from stack ") 
+                   print("ai move to: "+str(bestmov)) 
+                else:
+                   print("ai inside board")
+                   print("ai move from: "+str(mov)) 
+                   print("ai move to: "+str(bestmov))
+                print(Game.get_top(target_row,target_column).size)    
             if  Game.winner != "":
                 return Game.winner                        
             Game.set_winner()   
@@ -744,11 +793,6 @@ class Game:
                         print('Piece color = '+  str(Game.white_player.color) )
                         print( "AI played in " + str( (ai_move[1][0], ai_move[1][1]) ) )
                         print( "Piece Size = " + str(Game.get_top( ai_move[1][0], ai_move[1][1]).size ))
-                    
-                #if ai_move != None and difficulty == "hard" :
-                 #   print( "ai move ==" + str(ai_move[1]) )
-                #else : 
-                 #   print( "AI played in " + str(mov) )
                 rc += 1             
                 if( rc > 3 ) :
                     rc = 0
@@ -760,7 +804,6 @@ class Game:
                 Game.current = "w"
             elif Game.current == "w":
                 Game.current = "b"
-
          return Game.winner  
 game = Game()
 winner = game.play()
