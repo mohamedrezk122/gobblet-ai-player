@@ -4,6 +4,7 @@ import pygame_menu as pgm
 from .constants import *
 from .piece import Piece
 
+
 class Board:
     def __init__(self, menu):
         self.menu = menu
@@ -39,9 +40,9 @@ class Board:
                     use_center_positioning=False,
                 )
 
-
     def intialize_pieces(self):
         for i in range(PIECES_BY_PLAYER // PIECES_SIZES):
+            print("i", i)
             for size in SIZE.keys():
                 for player in PLAYER.keys():
                     piece = Piece(player, size, None, None)
@@ -54,20 +55,20 @@ class Board:
 
     def get_stack(self, row, col):
         if col >= len(self.board[row]):
-            return None 
+            return None
         return self.board[row][col]
 
     def get_top_piece(self, row, col):
         stack = self.get_stack(row, col)
-        if stack :
+        if stack:
             return stack[-1]
-        return None 
+        return None
 
     def print_board(self):
         for row in self.board:
-            for cell in row :
-                for p in cell :
-                    print(p.player , end=" ")
+            for cell in row:
+                for p in cell:
+                    print(p.player, end=" ")
                 print(" | ", end=" ")
             print()
             print("--------------------------------------")
