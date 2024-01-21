@@ -17,6 +17,7 @@ class Piece:
         self.x = 0
         self.y = 0
         self.button = None
+        self.aside_stack = None
         self.image = pgm.BaseImage(
             PLAYER[self.player][-1], drawing_mode=pgm.baseimage.IMAGE_MODE_CENTER
         )
@@ -26,6 +27,7 @@ class Piece:
         return f"Piece@ player {PLAYER[self.player][0]} size {SIZE[self.size][0]}"
 
     def place_aside(self, idx):
+        self.aside_stack = idx + 1
         self.dx, self.dy = self.position_correction()
         offset = BOARD_POS_X / 2
         if self.player == "b":

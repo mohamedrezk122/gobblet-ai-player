@@ -2,9 +2,9 @@ import pygame
 import pygame_menu as pgm
 
 from .board import Board
-from .game  import Game
+from .game import Game
 from .constants import *
-from .themes    import * 
+from .themes import *
 
 pygame.init()
 
@@ -35,22 +35,17 @@ main_menu = pgm.Menu(
 )
 
 
-
 play_button = main_menu.add.button("Play", game_window)
 
 mode_selector = main_menu.add.selector(
     "Mode: ",
-    [("Human vs Human", 1), ("Human vs AI", 2), ("AI vs AI", 3)],
+    [("Human vs Human", 0), ("Human vs AI", 1), ("AI vs AI", 2)],
     onchange=None,
 )
 
 difficulty_selector = main_menu.add.selector(
     "Difficulty: ",
-    [("Easy-Easy", 1), ("Hard-Easy", 2), ("Easy-Hard", 3), ("Hard-Hard", 4)],
+    [("Easy-Easy", 0), ("Hard-Easy", 1), ("Easy-Hard", 2), ("Hard-Hard", 3)],
     onchange=None,
 )
 quit_button = main_menu.add.button("Quit", pgm.events.EXIT)
-
-
-
-
