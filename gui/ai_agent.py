@@ -1,5 +1,7 @@
+siz = 4
 count = 0
 flag = False
+
 
 import random
 
