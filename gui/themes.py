@@ -1,5 +1,5 @@
-import pygame 
-import pygame_menu as pgm 
+import pygame
+import pygame_menu as pgm
 
 background_image = pgm.baseimage.BaseImage(
     image_path="./gui/assets/menu_image.png",
@@ -44,4 +44,3 @@ game_theme_attributes = {
 
 main_menu_theme = pgm.Theme(**main_menu_theme_attributes)
 game_theme = pgm.Theme(**game_theme_attributes)
-

@@ -4,6 +4,7 @@ import pygame_menu as pgm
 from gui.menu import * 
 from gui.constants import * 
 from gui.game import Game 
+from gui.ai_agent import Logic 
 
 game = Game(game_window)
 
@@ -24,7 +25,7 @@ def game_loop():
             main_menu.draw(DISPLAY)
 
         if game_window.is_enabled():
-            game.check_collision(events)
+            game.play(events)
 
         pygame.display.flip()
 
