@@ -25,8 +25,8 @@ MEDIUM_GOBBLET = CELL_WIDTH * 0.8
 LARGE_GOBBLET = CELL_WIDTH * 0.9
 
 
-BLACK_GOBBLET = "./gui/assets/black.png"
-WHITE_GOBBLET = "./gui/assets/white.png"
+BLACK_GOBBLET = "./src/gui/assets/black.png"
+WHITE_GOBBLET = "./src/gui/assets/white.png"
 
 PLAYER = {
     "b": ["BLACK", WHITE_PLAYER_COLOR, BLACK_PLAYER_COLOR, BLACK_GOBBLET],
