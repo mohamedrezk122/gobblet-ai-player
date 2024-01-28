@@ -23,8 +23,7 @@ class AI_Agent:
 
     def execute_min_max(self, state, player, depth, alpha, beta):
         if depth == 0 :
-            player = "w" if player == "b" else "b"
-            return evaluate_state(state, player, self.difficulty)
+            return evaluate_state(state, self.max_player, self.difficulty)
 
         if player == self.max_player:
             max_score = float("-inf")
@@ -43,7 +42,7 @@ class AI_Agent:
                 # if depth == self.max_depth and max_score == score and mutation_probabilty >= self.MUTATION:
                 #     self.best_move = move
                 #     print("max_score", max_score)
-                if max_score == score and depth == self.max_depth :
+                if depth == self.max_depth and score >= max_score :
                     self.best_moves[score].append(move)
                 max_score = max(score, max_score)
                 if alpha >= beta:

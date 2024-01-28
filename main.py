@@ -47,8 +47,8 @@ else :
     board = Board()
     state = State(board.abstract_board, board.stacks)
 
-    w_agent  = AI_Agent("w", "easy")
-    b_agent  = AI_Agent("b", "hard")
+    w_agent  = AI_Agent("w", "hard")
+    b_agent  = AI_Agent("b", "easy")
     player = "w"
     winner = False
     while not winner:
