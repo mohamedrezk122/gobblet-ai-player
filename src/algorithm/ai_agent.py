@@ -16,65 +16,66 @@ class AI_Agent:
         }
         self.max_depth = self.difficulty_to_depth[difficulty]
         self.difficulty = difficulty
-        # self.MUTATION = 0.3 if difficulty == "easy" else 0
-        self.best_move = None
-        self.best_moves = defaultdict(list)
+        self.is_first_move  = True
         print("agent difficulty: ", self.max_player, self.difficulty)
 
     def execute_min_max(self, state, player, depth, alpha, beta):
         if depth == 0 :
-            return evaluate_state(state, self.max_player, self.difficulty)
+            p = self.max_player if self.max_depth % 2 == 0 else self.min_player
+            return evaluate_state(state, p)
 
         if player == self.max_player:
-            max_score = float("-inf")
-            moves, has_winning = state.get_valid_moves(self.max_player, include_winning_moves=(self.difficulty == "hard"))
-            if has_winning  and depth == self.max_depth and self.difficulty == "hard":
-                self.best_moves = {1:[random.choice(moves)]}
-                print("at root")
-                return 10000
+            score = float("-inf")
+            moves, has_winning = state.get_valid_moves(self.max_player, include_winning_moves=False)
             for move in moves:
-                new_state = state.apply_move(move, self.max_player)
+                state.apply_move(move, self.max_player)
                 score = self.execute_min_max(
-                    new_state, self.min_player, depth - 1, alpha, beta
+                    state, self.min_player, depth - 1, alpha, beta
                 )
+                state.undo_move(move, self.max_player)
+                if score >= beta:
+                    return score
                 alpha = max(alpha, score)
-                # mutation_probabilty = random.random()
-                # if depth == self.max_depth and max_score == score and mutation_probabilty >= self.MUTATION:
-                #     self.best_move = move
-                #     print("max_score", max_score)
-                if depth == self.max_depth and score >= max_score :
-                    self.best_moves[score].append(move)
-                max_score = max(score, max_score)
-                if alpha >= beta:
-                    break
-            return alpha
+            return score
         else:  # min_player
-            min_score = float("inf")
+            score = float("inf")
             moves,_ = state.get_valid_moves(self.min_player, include_winning_moves= False)
             for move in moves:
-                new_state = state.apply_move(move, self.min_player)
+                state.apply_move(move, self.min_player)
                 score = self.execute_min_max(
-                    new_state, self.max_player, depth - 1, alpha, beta
+                    state, self.max_player, depth - 1, alpha, beta
                 )
+                state.undo_move(move, self.min_player)
+                if alpha >= score:
+                    return score
                 beta = min(score, beta)
-                # mutation_probabilty = random.random()
-                # if depth == self.max_depth and min_score == score and mutation_probabilty >= self.MUTATION:
-                #     self.best_move = move
-                # min_score = min(min_score , score)
-                if alpha >= beta:
-                    break
-            return beta
+            return score
 
     def play_by_ai(self, state):
-        self.best_move = None
         self.best_moves = defaultdict(list)
+        best_move  = None
         alpha = float("-inf")
         beta = float("inf")
-        score = self.execute_min_max(
-            state, self.max_player, self.max_depth, alpha, beta
-        )
-        print("len ", len(self.best_moves))
-        move = random.choice(self.best_moves[max(self.best_moves)])
-        print("score:", score, "player: ", self.max_player)
-        return move
+        max_score = float("-inf")
+        moves, has_winning = state.get_valid_moves(self.max_player, self.difficulty=="hard")
+        if self.is_first_move:
+            print("first here")
+            self.is_first_move = False
+            return random.choice(moves)
+
+        if has_winning and self.difficulty=="hard":
+            return random.choice(moves)
+        for move in moves:
+            state.apply_move(move, self.max_player)
+            score = self.execute_min_max(
+                state, self.min_player, self.max_depth-1, alpha, beta
+            )
+            state.undo_move(move, self.max_player)
+            if score > max_score:
+                max_score = score
+                self.best_moves[score].append(move)
+                best_move = move
+        best_move = random.choice(self.best_moves[max(self.best_moves)])
+        print("score:", max_score, "player: ", self.max_player, "move:", best_move)
+        return best_move
 

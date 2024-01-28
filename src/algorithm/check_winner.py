@@ -4,7 +4,7 @@ def count_pieces_in_line(state, line):
         piece = state.get_top_piece(row, col)
         if not piece:
             continue
-        if piece.player == "w":
+        elif piece.player == "w":
             w_count += 1
         else:
             b_count += 1
