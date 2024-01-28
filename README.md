@@ -1,5 +1,8 @@
 # Gobblet Game AI Player
 
+## EXE
+exe file is in game.rar 
+
 ## Usage
 - clone repo 
 
