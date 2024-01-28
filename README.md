@@ -17,6 +17,11 @@ pip install -r requirements.txt
 ``` sh 
 python3 main.py 
 ```
+## Diagrams
+
+![](./classes.png)
+
+![](packages.png)
 
 ## Development Guidelines
 - File names 
