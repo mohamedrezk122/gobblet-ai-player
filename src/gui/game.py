@@ -138,7 +138,7 @@ class Game:
             self.black_should_play = True
             self.state = State(self.board.abstract_board, self.board.stacks)
             if self.difficulty[0] == "easy":
-                pygame.time.delay(300)
+                pygame.time.delay(150)
         elif self.current_player == "b" and self.black_should_play:
             ai_move = self.b_agent.play_by_ai(self.state)
             if not ai_move :
@@ -148,7 +148,7 @@ class Game:
             self.black_should_play = False
             self.state = State(self.board.abstract_board, self.board.stacks)
             if self.difficulty[1] == "easy":
-                pygame.time.delay(300)
+                pygame.time.delay(150)
 
     def get_board(self):
         return self.board

@@ -3,7 +3,6 @@ import pygame
 import pygame_menu as pgm
 from dataclasses import dataclass
 
-
 from .constants import *
 
 def dummy():
@@ -33,6 +32,8 @@ class Abstract_Piece:
         new_instance.col = self.col
         return new_instance
 
+    def is_outside(self):
+        return self.row == None and self.col == None
 
 class Piece:
     obj_id = itertools.count()
@@ -45,7 +46,6 @@ class Piece:
         self.x = 0
         self.y = 0
         self.id = next(Piece.obj_id)
-        print("iddd: ", self.id)
         self.button = None
         self.aside_stack = aside_stack
         self.abstract_piece = Abstract_Piece(
